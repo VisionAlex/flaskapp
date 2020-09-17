@@ -26,9 +26,33 @@ def create_app(test_config=None):
 	def index():
 			return render_template("index.html")
 
-	@app.route("/login/")
+	@app.route("/login/", methods=['GET', 'POST'])
 	def login():
-		return render_template("login.html")
+		if request.method == "POST":
+			email = request.form['email']
+			password = request.form['password']
+			c, conn = db.connection()
+			error = None
+			op = c.execute("SELECT * FROM users WHERE email = %s", (email,))
+			data = c.fetchone()
+			if int(op) == 0:
+				error = "Invalid credentials."
+			elif not check_password_hash(data['password'], password):
+
+				error = "Invalid credentials."
+			
+			if error is None:
+				session.clear()
+				session['logged_in'] = True
+				session['user_id'] =data['uid']
+				flash("You are now logged in.")
+				c.close()
+				conn.close()
+				return redirect(url_for('index'))
+
+			flash(error)
+	
+		return render_template('login.html')
 
 	@app.route("/register/", methods=['GET', 'POST'])
 	def register():
@@ -52,16 +76,23 @@ def create_app(test_config=None):
 					c.close()
 					conn.close()
 					gc.collect()
-					return redirect(url_for('index'))
+
+					return redirect(url_for('login'))
 				
 				flash(error)
 			except Exception as e:
 				return str(e)
 
 		return render_template('register.html')
-	@app.route("/test")
+	
+
+	@app.route("/test", methods=["GET", "POST"])
 	def test():
-			return "True"
+		if request.method == "POST":
+			email = request.form['email']
+			password = request.form['password']
+			return "succeeded"
+		return render_template("test.html")
 
 	
 	return app
