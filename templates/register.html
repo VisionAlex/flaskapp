@@ -3,50 +3,63 @@
 {% block title %}Register{% endblock %}
 
 {% block content %}
+
+
+
+
+
 <div id="layoutAuthentication">
             <div id="layoutAuthentication_content">
+                
                 <main>
+                   
                     <div class="container">
                         <div class="row justify-content-center">
                             <div class="col-lg-7">
                                 <div class="card shadow-lg border-0 rounded-lg mt-5">
                                     <div class="card-header"><h3 class="text-center font-weight-light my-4">Create Account</h3></div>
                                     <div class="card-body">
-                                        <form>
+                                        <form method="post" oninput="confirm.setCustomValidity(confirm.value != password.value ? 'Passwords do not match' : '')">
                                             <div class="form-row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label class="small mb-1" for="inputFirstName">First Name</label>
-                                                        <input class="form-control py-4" id="inputFirstName" type="text" placeholder="Enter first name" />
+                                                        <input name="firstname" class="form-control py-4" id="inputFirstName" type="text" placeholder="Enter first name" minlength="4" maxlength="25" required/>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label class="small mb-1" for="inputLastName">Last Name</label>
-                                                        <input class="form-control py-4" id="inputLastName" type="text" placeholder="Enter last name" />
+                                                        <input name= "lastname"class="form-control py-4" id="inputLastName" type="text" placeholder="Enter last name" minlength="4" maxlength="25"required/>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label class="small mb-1" for="inputEmailAddress">Email</label>
-                                                <input class="form-control py-4" id="inputEmailAddress" type="email" aria-describedby="emailHelp" placeholder="Enter email address" />
+                                                <input name ="email" class="form-control py-4" id="inputEmailAddress" type="email" aria-describedby="emailHelp" placeholder="Enter email address" maxlength="50" required>
                                             </div>
                                             <div class="form-row">
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label class="small mb-1" for="inputPassword">Password</label>
-                                                        <input class="form-control py-4" id="inputPassword" type="password" placeholder="Enter password" />
+                                                        <input  name="password" class="form-control py-4" id="inputPassword" type="password" placeholder="Enter password" minlength="4" maxlength="25" required>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="form-group">
                                                         <label class="small mb-1" for="inputConfirmPassword">Confirm Password</label>
-                                                        <input class="form-control py-4" id="inputConfirmPassword" type="password" placeholder="Confirm password" />
+                                                        <input name="confirm" class="form-control py-4" id="inputConfirmPassword" type="password" placeholder="Confirm password" required>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="form-group mt-4 mb-0"><a class="btn btn-info btn-block" href="login.html">Create Account</a></div>
+                                            <div class="form-group mt-4 mb-0"><input type="submit" value="Create Account" class="btn btn-info btn-block">
+                                            </div>
                                         </form>
+                                        {% for message in get_flashed_messages() %}
+                                            <div class="card-body text-center" style="color:red">
+                                                {{ message }}
+                                            </div>
+                                        {% endfor %}
                                     </div>
                                     <div class="card-footer text-center">
                                         <div class="small"><a href="{{ url_for('login') }}">Have an account? Go to login</a></div>

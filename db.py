@@ -1,22 +1,15 @@
-import pymysql
-
-connection =pymysql.connect(host='localhost',
-							user='visionalex',
-							password='burkinafaso46',
-							db='webapp',
-							cursorclass=pymysql.cursors.DictCursor
-			)
+import pymysql.cursors
 
 
-c = connection.cursor()
+def connection():
+	conn = pymysql.connect(host='localhost',
+						   user='visionalex',
+						   password='burkinafaso46',
+						   db='webapp',
+						   charset='utf8mb4',
+						   cursorclass=pymysql.cursors.DictCursor)
+	c = conn.cursor()
+	return c, conn
 
-sql = """CREATE TABLE `users` (
-    `id` int(11) NOT NULL AUTO_INCREMENT,
-    `email` varchar(255) NOT NULL,
-    `password` varchar(255) NOT NULL,
-    PRIMARY KEY (`id`)
-) ENGINE=InnoDB;"""
 
-c.execute(sql)
-c.commit()
-c.close()
+
