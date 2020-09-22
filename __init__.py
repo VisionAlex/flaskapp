@@ -1,5 +1,5 @@
 # imports
-from flask import Flask, render_template, flash, request, url_for, redirect, session
+from flask import Flask, render_template, flash, request, url_for, redirect, session, g
 from flask_mysqldb import MySQL
 from werkzeug.security import check_password_hash, generate_password_hash
 from wtforms import Form, StringField, TextAreaField, validators
@@ -20,6 +20,19 @@ def create_app(test_config=None):
 		os.makedirs(app.instance_path)
 	except OSError:
 		pass
+
+	@app.before_request
+	def load_logged_in_user():
+		user_id= session.get('user_id')
+
+		if user_id is None:
+			g.user = None
+		else:
+			c, conn = db.connection()
+			c.execute("SELECT * FROM users WHERE id=%s", (user_id,))
+			g.user= c.fetchone()
+			c.close()
+			conn.close()
 
 	@app.route("/index")
 	@app.route("/")
@@ -44,7 +57,7 @@ def create_app(test_config=None):
 			if error is None:
 				session.clear()
 				session['logged_in'] = True
-				session['user_id'] =data['uid']
+				session['user_id'] =data['id']
 				flash("You are now logged in.")
 				c.close()
 				conn.close()
@@ -86,14 +99,11 @@ def create_app(test_config=None):
 		return render_template('register.html')
 	
 
-	@app.route("/test", methods=["GET", "POST"])
-	def test():
-		if request.method == "POST":
-			email = request.form['email']
-			password = request.form['password']
-			return "succeeded"
-		return render_template("test.html")
-
+	@app.route('/logout/')
+	def logout():
+		session.clear()
+		flash("You have been logged out.")
+		return redirect(url_for('index'))
 	
 	return app
 
