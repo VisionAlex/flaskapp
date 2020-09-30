@@ -4,8 +4,19 @@ from flask_mysqldb import MySQL
 from werkzeug.security import check_password_hash, generate_password_hash
 from wtforms import Form, StringField, TextAreaField, validators
 import os, gc
+from functools import wraps
 
 from . import db
+from .forms import TransactionsForm
+
+def login_required(f):
+	@wraps(f)
+	def decorated_function(*args, **kwargs):
+		if g.user is None:
+			return redirect(url_for('login'))
+		return f(*args, **kwargs)
+	return decorated_function
+
 
 
 
@@ -37,7 +48,13 @@ def create_app(test_config=None):
 	@app.route("/index")
 	@app.route("/")
 	def index():
-			return render_template("index.html")
+			c, conn = db.connection()
+			c.execute("SELECT * FROM gold_prices ORDER BY Date DESC LIMIT 1")
+			gold = c.fetchone()['Close']
+			c.execute("SELECT * FROM fx_rates ORDER BY Date DESC LIMIT 1")
+			rate = c.fetchone()['EURUSD=X']
+			gold_price = round(gold/rate)
+			return render_template("index.html",gold_price=gold_price)
 
 	@app.route("/login/", methods=['GET', 'POST'])
 	def login():
@@ -100,11 +117,43 @@ def create_app(test_config=None):
 	
 
 	@app.route('/logout/')
+	@login_required
 	def logout():
 		session.clear()
 		flash("You have been logged out.")
 		return redirect(url_for('index'))
+
+	@app.route('/transactions/', methods=["GET", "POST"])
+	@login_required
+	def transactions():
+		form = TransactionsForm()
+		if request.method == "POST":
+			user_id =session.get('user_id')
+			asset_type = form.asset_type.data
+			if form.buy_sell.data == "Buy":
+				units = form.units.data
+			else:
+				units = -form.units.data
+			date = form.date.data
+			symbol = form.symbol.data
+			name = form.name.data
+			price = form.price.data
+			currency = form.currency.data
+			c, conn = db.connection()
+			c.execute("INSERT INTO transactions (user_id,asset_type, date, symbol, name, units,price,currency) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)",
+				(user_id, asset_type, date, symbol, name, units, price, currency)
+				)
+			conn.commit()
+			c.close()
+			conn.close()
+			gc.collect()
+			flash("Transaction added succesfully.")
+			return redirect(url_for('transactions'))
+
+			return form.data
+		return render_template('transactions.html', form=form)
 	
+
 	return app
 
 

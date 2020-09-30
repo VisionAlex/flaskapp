@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}Transactions{% endblock %}
+
+
+{% block menu %}
+{{ super() }}
+<script>
+	document.getElementById("transactions").className = "nav-item active";
+</script>
+{% endblock %}
+
+{% block content %}
+    <form method="POST">
+        <div class= "container-fluid mt-4">
+        <div class="card bg-light">
+            <div class="form-row  ml-2 mt-4">
+                {{ form.csrf_token }}
+                <div class="mb-3 mr-2 rounded">         
+                    {{ form.asset_type(class="form-control") }}
+                </div>
+                <div class="mb-3 mr-2 rounded">         
+                    {{ form.buy_sell(class="form-control") }}
+                </div>
+                <div class="mb-3 mr-2 rounded">         
+                    {{ form.date(class="form-control", placeholder="date", type="date", required=True) }}
+                </div>
+                <div class="mb-3 mr-2 rounded">         
+                    {{ form.symbol(class="form-control", placeholder="Symbol") }}
+                </div>
+                <div class="mb-3 mr-2 rounded">         
+                    {{ form.name(class="form-control", placeholder="Name") }}
+                </div>
+                <div class="mb-3 mr-2 rounded">         
+                    {{ form.units(class="form-control", placeholder="Units", required=True, type ="number") }}
+                </div>
+                <div class="mb-3 mr-2 rounded">         
+                    {{ form.price(class="form-control", placeholder="Price", required=True, type ="number") }}
+                </div>
+                <div class="mb-3 mr-2 rounded">         
+                    {{ form.fx_rate(class="form-control", placeholder="FX Rate", hidden=True) }}
+                </div>
+                <div class="mb-3 mr-2 rounded">         
+                    {{ form.currency(class="form-control", placeholder="Currency") }}
+                </div>
+                <div class="mb-3 rounded">         
+                    <input class= "btn btn-info" type="submit" name="submit" value="Add transaction">
+                </div>
+            </div>
+        </div>            
+        </div>
+    </form>
+    
+	
+<script src="{{ url_for('static', filename='js/transactions.js') }}"></script>
+{% endblock %}

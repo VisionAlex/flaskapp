@@ -2,8 +2,28 @@
 
 {% block title %}Homepage{% endblock %}
 
+{% block menu %}
+{{ super() }}
+<script>
+	document.getElementById("home").className = "nav-item active";
+</script>
 
+
+{% endblock %}
 
 {% block content %}
+<div class="container-fluid mt-4">
+<div class="row">
+    
+    <div class="col-xl-3 col-md-6 d-flex">
+        <div class="card bg-light text-secondary mb-4 shadow">
+            <div class="card-header bg-warning">Gold Price</div>
+            <div class="card-body ">{{ gold_price }}&euro;</div>  
+        </div>
+    </div>
+    
+    
+</div>
+</div>
 
 {% endblock %}
