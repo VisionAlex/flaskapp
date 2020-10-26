@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block title%}Portfolio{% endblock %}
+
+
+{% block menu %}
+	{{ super() }}
+	<script>
+		document.getElementById("history").className = "nav-item active";
+	</script>
+{% endblock %}
+
+
+
+
+
+{% block body %}
+<div class="container-fluid ml-0 pl-0 mt-2">
+	<div class="card shadow mb-4 col-md-6 ">
+		<div class="card-header py-3">
+			<h6 class="m-0 font-weight-bold text-info">Transactions</h6>
+		</div>
+		<div class="card-body">
+			<div class="table-responsive">
+				<table class="table table-hover table-sm" id="portfolioTable" width="100%" cellspacing="0">
+					<thead>
+						<tr>
+							<th>Asset Type</th>
+							<th>Symbol</th>
+							<th>Units</th>
+							<th>Price</th>
+							<th>Currency</th>
+							<th>Total {{ base }}</th>
+							<th>Unrealized Profit/Loss</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% if transactions %}
+						{% for item in transactions %}
+							<tr id ="{{ item.symbol }}">
+								<td class="{{item.asset_type}}">{{item.asset_type}}</td>
+								<td>{{item.symbol}}</td>
+								<td class="units">{{item.units}}</td>
+								<td class="price">{{item.price}}</td>
+								<td class="currency">{{item.currency}}</td>
+								<td class="total"></td>
+								<td class="profit_loss"></td>
+							</tr>
+							</form>
+						{% endfor%}
+						{% endif%}
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+	</div>
+</div>
+{% endblock %}
+
+
+
+{% block script %}
+<script>
+	$(document).ready(function() {
+  $('#portfolioTable').DataTable({
+  		paging: false
+  } );
+});
+</script>
+
+<script>
+	let rows = document.getElementsByTagName('tr')
+	for (var i=1;i<=rows.length;i++) {
+		rows[i].children[5].innerHTML = Math.round(parseFloat(rows[i].children[2].innerHTML) * parseFloat(rows[i].children[3].innerHTML))
+	}
+</script>
+{% endblock %}

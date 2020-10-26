@@ -11,9 +11,12 @@
 {% endblock %}
 
 {% block content %}
-    <form method="POST">
+    <form id="add_transaction" method="POST" action="{{ url_for('add') }}">
         <div class= "container-fluid mt-4">
         <div class="card bg-light">
+            <div class="card-header">
+                <h6>Add a transaction</h6>
+            </div>
             <div class="form-row  ml-2 mt-4">
                 {{ form.csrf_token }}
                 <div class="mb-3 mr-2 rounded">         
@@ -32,10 +35,13 @@
                     {{ form.name(class="form-control", placeholder="Name") }}
                 </div>
                 <div class="mb-3 mr-2 rounded">         
-                    {{ form.units(class="form-control", placeholder="Units", required=True, type ="number") }}
+                    {{ form.units(class="form-control", placeholder="Units", type ="number", step="any, min=0") }}
                 </div>
                 <div class="mb-3 mr-2 rounded">         
-                    {{ form.price(class="form-control", placeholder="Price", required=True, type ="number") }}
+                    {{ form.price(class="form-control", placeholder="Price", required=True, type ="number", step="any") }}
+                </div>
+                <div class="mb-3 mr-2 rounded">         
+                    {{ form.fee(class="form-control", placeholder="Fee", type ="number", step="any") }}
                 </div>
                 <div class="mb-3 mr-2 rounded">         
                     {{ form.fx_rate(class="form-control", placeholder="FX Rate", hidden=True) }}
@@ -43,14 +49,46 @@
                 <div class="mb-3 mr-2 rounded">         
                     {{ form.currency(class="form-control", placeholder="Currency") }}
                 </div>
-                <div class="mb-3 rounded">         
-                    <input class= "btn btn-info" type="submit" name="submit" value="Add transaction">
-                </div>
+                <div class="mb-3 rounded">
+                    {{ form.submit1(class="btn btn-info",value="Add transaction") }}         
+                </div>  
+            </div>
+            <div class="card-container ml-2">
+                <small id="fx_help" class="form-text text-muted" hidden>You can leave fx rate empty and we will use closing rate on the day the transaction happened.</small>
             </div>
         </div>            
         </div>
     </form>
+    <form id="upload file" method="POST" enctype="multipart/form-data" action="{{ url_for('upload') }}">
+        <div class= "container-fluid mt-4">
+            <div class="card bg-light">
+                <div class="card-header">
+                    <h6>Or upload a file</h6>
+                </div>
+
+                <div class='form-row ml-2 mt-4'>
+                    {{ form.csrf_token }}
+                    <div class="mb-3 mr-2 rounded">         
+                        {{ upload_form.broker(class="form-control") }}
+                    </div>
+                    <div class="mb-3 mr-2 rounded">         
+                        {{ upload_form.account_currency(class="form-control") }}
+                    </div>
+                    <div class="mb-3 mr-2 rounded">         
+                        {{ upload_form.file(class="form-control-file",accept=".csv") }}
+                    </div>
+                    <div class="mb-3 rounded">
+                        {{ upload_form.submit2(class="btn btn-info",value="Submit") }}         
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
     
 	
+
+{% endblock %}
+
+{% block script %}
 <script src="{{ url_for('static', filename='js/transactions.js') }}"></script>
 {% endblock %}

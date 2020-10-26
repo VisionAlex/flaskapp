@@ -5,6 +5,7 @@
   	<meta content="width=device-width, initial-scale=1.0" name="viewport">
 	<title>{% block title%}{% endblock %}</title>
     <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.22/b-1.6.5/b-colvis-1.6.5/b-html5-1.6.5/fh-3.1.7/r-2.2.6/datatables.min.css"/>
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
 </head>
 <header>
@@ -22,11 +23,14 @@
         	<a class="nav-link" href="{{ url_for('index') }}">Home</a>
       	</li>
       	<li id="portfolio" class="nav-item">
-        	<a class="nav-link" href="#">Portfolio</a>
+        	<a class="nav-link" href="{{ url_for('portfolio') }}">Portfolio</a>
       	</li>
       	<li id="transactions" class="nav-item">
         	<a class="nav-link" href="{{ url_for('transactions') }}">Transactions</a>
       	</li>
+        <li id="history" class="nav-item">
+          <a class="nav-link" href="{{ url_for('history') }}">History</a>
+        </li>
     </ul>  
     <ul class="navbar-nav ml-auto">
     	<li id="settings" class="nav-item">
@@ -47,8 +51,7 @@
           <a class="nav-link disabled" href="#">Transactions</a>
         </li>
     </ul>  
-    <div class='container ml-auto'>
-      <ul class="navbar-nav">
+      <ul class="navbar-nav ml-auto">
       <li class="nav-item">
         <a class="nav-link" href="{{ url_for('login') }}">Login</a>
       </li>
@@ -56,18 +59,61 @@
         <a class="nav-link" href="{{ url_for('register') }}">Register</a>
       </li> 
       {% endif %}
-
       </ul>
-    </div> 
     
   </div>
 </nav>
 </header>	
 <body>
+  <div class="container-fluid">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+      <div class="row justify-md-center text-left">
+        <div class="col-md-6">
+      
+          {% if category %}
+          <div class="alert alert-{{ category }} alert-dismissible m-1 p-1" role="alert">
+            <button type="button" class="close" style="font-size: 16px;" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            {{ message }}
+          </div>
+      
+          {% else %}
+      
+          <div class="alert alert-warning alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            {{ message }}
+          </div>
+          {% endif %}
+        </div>
+      </div>
+      
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    
+
+    <!-- specific page content below -->
+    {% block body %}{% endblock %}
+    
+  </div>
+
+
+
+
+
 	 {% block content %}
 	 {% endblock %}
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src="{{url_for('static', filename='js/bootstrap.min.js')}}"></script></s>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.22/b-1.6.5/b-colvis-1.6.5/b-html5-1.6.5/fh-3.1.7/r-2.2.6/datatables.min.js"></script>
+
+    {% block script %}{% endblock %}
 </body>
 </html>

@@ -5,20 +5,21 @@ let units = document.getElementById("units")
 let price = document.getElementById("price")
 let currency = document.getElementById("currency")
 let fx_rate = document.getElementById("fx_rate")
+let fx_help = document.getElementById("fx_help")
 
 asset_type.onchange = function() {
-	if (asset_type.value == "cash") {
+	if (asset_type.value == "Cash") {
 		symbol.hidden = true;
 		name.hidden = true;
 		units.placeholder = "Amount";
 		price.placeholder = "FX Rate";
 
-	} else if (asset_type.value == "real_estate") {
-		symbol.hidden = true;
+	} else if (asset_type.value == "Real_Estate") {
+		symbol.hidden = false;
 		name.hidden = false;
 		units.hidden = true;
 		price.placeholder="Price";
-	} else if (asset_type.value == "gold") {
+	} else if (asset_type.value == "Gold") {
 		symbol.hidden = false;
 		symbol.placeholder = "Unit type(g, oz, paper)"
 		name.hidden = true;
@@ -26,7 +27,7 @@ asset_type.onchange = function() {
 		price.placeholder = "Price"
 		units.placeholder = "Units"
 
-	} else if (asset_type.value == "stocks") {
+	} else if (asset_type.value == "Stocks") {
 		symbol.hidden= false;
 		symbol.placeholder = "Symbol"
 		symbol.required = true;
@@ -46,7 +47,9 @@ asset_type.onchange = function() {
 currency.onchange = function() {
 	if (currency.value != "EUR") {
 		fx_rate.hidden = false;
+		fx_help.hidden = false;
 	} else {
 		fx_rate.hidden = true;
+		fx_help.hidden = true;
 	}
 }
