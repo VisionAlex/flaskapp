@@ -1,11 +1,11 @@
-let asset_type = document.getElementById("asset_type")
-let symbol = document.getElementById("symbol")
-let name = document.getElementById("name")
-let units = document.getElementById("units")
-let price = document.getElementById("price")
-let currency = document.getElementById("currency")
-let fx_rate = document.getElementById("fx_rate")
-let fx_help = document.getElementById("fx_help")
+const asset_type = document.querySelector("#asset_type")
+const symbol = document.querySelector("#symbol")
+const name = document.querySelector("#name")
+const units = document.querySelector("#units")
+const price = document.querySelector("#price")
+const currency = document.querySelector("#currency")
+const fx_rate = document.querySelector("#fx_rate")
+const fx_help = document.querySelector("#fx_help")
 
 asset_type.onchange = function() {
 	if (asset_type.value == "Cash") {

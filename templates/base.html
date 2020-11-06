@@ -8,63 +8,64 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.22/b-1.6.5/b-colvis-1.6.5/b-html5-1.6.5/fh-3.1.7/r-2.2.6/datatables.min.css"/>
     <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
 </head>
-<header>
-        <nav class="navbar navbar-expand-sm navbar-dark bg-info">
-  <a class="navbar-brand" href="#">Portfolio Manager</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-        {% if g.user %}
-        {% block menu %}
-      	<li id="home" class="nav-item">
-        	<a class="nav-link" href="{{ url_for('index') }}">Home</a>
-      	</li>
-      	<li id="portfolio" class="nav-item">
-        	<a class="nav-link" href="{{ url_for('portfolio') }}">Portfolio</a>
-      	</li>
-      	<li id="transactions" class="nav-item">
-        	<a class="nav-link" href="{{ url_for('transactions') }}">Transactions</a>
-      	</li>
-        <li id="history" class="nav-item">
-          <a class="nav-link" href="{{ url_for('history') }}">History</a>
-        </li>
-    </ul>  
-    <ul class="navbar-nav ml-auto">
-    	<li id="settings" class="nav-item">
-    		<a class="nav-link" href="settings.html">Settings</a>
-    	</li>
-    	<li class="nav-item	">
-    		<a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
-    	</li>	
-        {% endblock %}
-        {% else %}
-        <li class="nav-item">
-          <a class="nav-link" href="{{url_for('index')}}">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link disabled" href="#">Portfolio</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link disabled" href="#">Transactions</a>
-        </li>
-    </ul>  
-      <ul class="navbar-nav ml-auto">
-      <li class="nav-item">
-        <a class="nav-link" href="{{ url_for('login') }}">Login</a>
-      </li>
-      <li class="nav-item ">
-        <a class="nav-link" href="{{ url_for('register') }}">Register</a>
-      </li> 
-      {% endif %}
-      </ul>
-    
-  </div>
+<body>
+  <header>
+    <nav class="navbar navbar-expand-sm navbar-dark bg-info">
+<a class="navbar-brand" href="#">Portfolio Manager</a>
+<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+<span class="navbar-toggler-icon"></span>
+</button>
+
+<div class="collapse navbar-collapse" id="navbarSupportedContent">
+<ul class="navbar-nav mr-auto">
+    {% if g.user %}
+    {% block menu %}
+    <li id="home" class="nav-item">
+      <a class="nav-link" href="{{ url_for('index') }}">Home</a>
+    </li>
+    <li id="portfolio" class="nav-item">
+      <a class="nav-link" href="{{ url_for('portfolio') }}">Portfolio</a>
+    </li>
+    <li id="transactions" class="nav-item">
+      <a class="nav-link" href="{{ url_for('transactions') }}">Transactions</a>
+    </li>
+    <li id="history" class="nav-item">
+      <a class="nav-link" href="{{ url_for('history') }}">History</a>
+    </li>
+</ul>  
+<ul class="navbar-nav ml-auto">
+  <li id="settings" class="nav-item">
+    <a class="nav-link" href="settings.html">Settings</a>
+  </li>
+  <li class="nav-item	">
+    <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+  </li>	
+    {% endblock %}
+    {% else %}
+    <li class="nav-item">
+      <a class="nav-link" href="{{url_for('index')}}">Home</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link disabled" href="#">Portfolio</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link disabled" href="#">Transactions</a>
+    </li>
+</ul>  
+  <ul class="navbar-nav ml-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+  </li>
+  <li class="nav-item ">
+    <a class="nav-link" href="{{ url_for('register') }}">Register</a>
+  </li> 
+  {% endif %}
+  </ul>
+
+</div>
 </nav>
 </header>	
-<body>
   <div class="container-fluid">
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
