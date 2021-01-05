@@ -2,7 +2,7 @@ import pymysql.cursors
 
 
 def connection():
-	conn = pymysql.connect(host='graurului.tplinkdns.com',
+	conn = pymysql.connect(host='',
 						   user='',
 						   password='',
 						   db='',
