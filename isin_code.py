@@ -1,6 +1,6 @@
 import openfigi
 
-API_KEY = "1571ca02-11aa-462f-be9a-b6f00bd569a8"
+API_KEY = ""
 
 def get_data_from_isin(isin_code, **kwargs):
 	conn = openfigi.OpenFigi(API_KEY)
